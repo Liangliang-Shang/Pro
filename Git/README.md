@@ -132,3 +132,81 @@ local   file:.git/config        core.editor=vim
            @Liangliang-Shang ➜ ~/test (main) $ git reflog
            bafd70b (HEAD -> main) HEAD@{0}: commit (initial): <New> ~ hello2git
   ```
+* **`Tracked`**
+    + **`Unstaged`**
+	```
+		@Liangliang-Shang ➜ ~/test (main) $ echo "Hello to GIT!" >> hello2git		# Modify a tracked file
+
+		@Liangliang-Shang ➜ ~/test (main) $ git status
+		On branch main
+		Changes not staged for commit:
+ 		  (use "git add <file>..." to update what will be committed)
+		  (use "git restore <file>..." to discard changes in working directory)
+ 			modified:   hello2git
+
+		no changes added to commit (use "git add" and/or "git commit -a")
+
+		# `git diff` would show changes in the working tree not yet staged for the next commit
+		@Liangliang-Shang ➜ ~/test (main) $ git diff
+		diff --git a/hello2git b/hello2git
+		index e69de29..0a3b6d2 100644
+		--- a/hello2git
+		+++ b/hello2git
+		@@ -0,0 +1 @@
+		+Hello to GIT!
+ 	```
+    + **`Staged`**
+	```
+		@Liangliang-Shang ➜ ~/test (main) $ git add hello2git 
+
+		@Liangliang-Shang ➜ ~/test (main) $ git status
+		On branch main
+		Changes to be committed:
+		  (use "git restore --staged <file>..." to unstage)
+			modified:   hello2git
+
+		@Liangliang-Shang ➜ ~/test (main) $ git diff			# no diff? as `git add` already run!
+
+		@Liangliang-Shang ➜ ~/test (main) $ git diff --cached		# diff between cached and last commit!
+		diff --git a/hello2git b/hello2git
+		index e69de29..0a3b6d2 100644
+		--- a/hello2git
+		+++ b/hello2git
+		@@ -0,0 +1 @@
+		+Hello to GIT!
+
+		@Liangliang-Shang ➜ ~/test (main) $ git diff --staged		# diff between staged and last commit!
+		diff --git a/hello2git b/hello2git
+		index e69de29..0a3b6d2 100644
+		--- a/hello2git
+		+++ b/hello2git
+		@@ -0,0 +1 @@
+		+Hello to GIT!
+	```
+     + **`Committed`**
+	```
+		@Liangliang-Shang ➜ ~/test (main) $ git commit -m "<Upd> ~ Add line Hello to GIT!"
+		[main 1cdf010] <Upd> ~ Add line Hello to GIT!
+ 		 1 file changed, 1 insertion(+)
+
+		@Liangliang-Shang ➜ ~/test (main) $ git status
+		On branch main
+		nothing to commit, working tree clean
+
+ 		@Liangliang-Shang ➜ ~/test (main) $ git log
+		commit 1cdf010451dc55e1e45167d50aaeefa9f1f9b179 (HEAD -> main)
+		Author: Liangliang <liangliang.shang@icloud.com>
+		Date:   Fri Mar 1 13:26:01 2024 +0000
+		
+		    <Upd> ~ Add line Hello to GIT!
+
+		commit bafd70b48c2343bec9a3fc5eb6b2ad5cf42d405a
+		Author: Liangliang <liangliang.shang@icloud.com>
+		Date:   Fri Mar 1 12:52:38 2024 +0000
+		
+		    <New> ~ hello2git
+
+		@Liangliang-Shang ➜ ~/test (main) $ git reflog
+		1cdf010 (HEAD -> main) HEAD@{0}: commit: <Upd> ~ Add line Hello to GIT!
+		bafd70b HEAD@{1}: commit (initial): <New> ~ hello2git
+	 ```
