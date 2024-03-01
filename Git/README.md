@@ -76,3 +76,59 @@ local   file:.git/config        core.editor=vim
 ## Index/Staging Area
 ## Repository
 ![](https://pic4.zhimg.com/80/v2-a933cd4bb34672899ffd5a30cccdce03_720w.webp)
+## File Status
+* **`Untracked`**
+  ```
+           @Liangliang-Shang ➜ ~/test (main) $ git log
+           fatal: your current branch 'main' does not have any commits yet
+
+           @Liangliang-Shang ➜ ~/test (main) $ git reflog
+           fatal: your current branch 'main' does not have any commits yet
+
+           @Liangliang-Shang ➜ ~/test (main) $ touch hello2git
+
+           @Liangliang-Shang ➜ ~/test (main) $ git status
+           On branch main
+
+           No commits yet
+
+           Untracked files:
+             (use "git add <file>..." to include in what will be committed)
+                   hello2git
+
+           nothing added to commit but untracked files present (use "git add" to track)
+  ```
+* **`Cached`**
+  ```
+           @Liangliang-Shang ➜ ~/test (main) $ git add hello2git 
+
+           @Liangliang-Shang ➜ ~/test (main) $ git status
+           On branch main
+	
+           No commits yet
+	
+           Changes to be committed:
+             (use "git rm --cached <file>..." to unstage)
+                   new file:   hello2git
+  ```
+* **`Committed`**
+  ```
+           @Liangliang-Shang ➜ ~/test (main) $ git commit -m "<New> ~ hello2git"
+           [main (root-commit) bafd70b] <New> ~ hello2git
+            1 file changed, 0 insertions(+), 0 deletions(-)
+            create mode 100644 hello2git
+
+           @Liangliang-Shang ➜ ~/test (main) $ git status
+           On branch main
+           nothing to commit, working tree clean
+
+           @Liangliang-Shang ➜ ~/test (main) $ git log
+           commit bafd70b48c2343bec9a3fc5eb6b2ad5cf42d405a (HEAD -> main)
+           Author: Liangliang <liangliang.shang@icloud.com>
+           Date:   Fri Mar 1 12:52:38 2024 +0000
+
+               <New> ~ hello2git
+
+           @Liangliang-Shang ➜ ~/test (main) $ git reflog
+           bafd70b (HEAD -> main) HEAD@{0}: commit (initial): <New> ~ hello2git
+  ```
