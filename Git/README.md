@@ -366,3 +366,99 @@ Date:   Fri Mar 1 12:52:38 2024 +0000
 1cdf010 (new, dev) HEAD@{8}: commit: <Upd> ~ Add line Hello to GIT!
 bafd70b HEAD@{9}: commit (initial): <New> ~ hello2git
 ```
+### Merge: Conflict
+```
+@Liangliang-Shang ➜ ~/test (main) $ git branch -v
+  dev  1cdf010 <Upd> ~ Add line Hello to GIT!
+  fix  567b02c <Fix> ~ Hello to GIT?
+* main 567b02c <Fix> ~ Hello to GIT?
+  new  1cdf010 <Upd> ~ Add line Hello to GIT!
+
+@Liangliang-Shang ➜ ~/test (main) $ git log --oneline
+567b02c (HEAD -> main, fix) <Fix> ~ Hello to GIT?
+1cdf010 (new, dev) <Upd> ~ Add line Hello to GIT!
+bafd70b <New> ~ hello2git
+
+@Liangliang-Shang ➜ ~/test (main) $ git checkout new
+Switched to branch 'new'
+
+@Liangliang-Shang ➜ ~/test (new) $ vim hello2git		# edit as showen in `git diff`
+
+@Liangliang-Shang ➜ ~/test (new) $ git diff
+diff --git a/hello2git b/hello2git
+index 0a3b6d2..c4565b9 100644
+--- a/hello2git
++++ b/hello2git
+@@ -1 +1,7 @@
+ Hello to GIT!
++
++# Version
++
++# Help
++
++# Config
+
+@Liangliang-Shang ➜ ~/test (new) $ git commit -am "<Upd> ~ Branch new - Add # Version/Help/Config"
+[new 9b15406] <Upd> ~ Branch new - Add # Version/Help/Config
+ 1 file changed, 6 insertions(+)
+
+@Liangliang-Shang ➜ ~/test (new) $ git checkout main
+Switched to branch 'main'
+
+@Liangliang-Shang ➜ ~/test (main) $ git merge new
+Auto-merging hello2git
+CONFLICT (content): Merge conflict in hello2git
+Automatic merge failed; fix conflicts and then commit the result.
+
+@Liangliang-Shang ➜ ~/test (main) $ cat hello2git 
+<<<<<<< HEAD
+Hello to GIT? A change from fix on line 1.
+=======
+Hello to GIT!
+
+# Version
+
+# Help
+
+# Config
+>>>>>>> new
+
+@Liangliang-Shang ➜ ~/test (main) $ vim hello2git		# manually fix the conflict as shown in `cat or diff`
+
+@Liangliang-Shang ➜ ~/test (main) $ cat hello2git 
+Hello to GIT? 
+
+# Version
+
+# Help
+
+# Config
+
+@Liangliang-Shang ➜ ~/test (main) $ git diff
+diff --cc hello2git
+index ec73a5d,c4565b9..0000000
+--- a/hello2git
++++ b/hello2git
+@@@ -1,1 -1,7 +1,7 @@@
+- Hello to GIT? A change from fix on line 1.
+ -Hello to GIT!
+++Hello to GIT? 
++ 
++ # Version
++ 
++ # Help
++ 
++ # Config
+
+@Liangliang-Shang ➜ ~/test (main) $ git commit -am "<Mrg> ~ Branch new - Hello to GIT! && # Version/Help/Config"
+[main 2e5e883] <Mrg> ~ Branch new - Hello to GIT! && # Version/Help/Config
+
+@Liangliang-Shang ➜ ~/test (main) $ git log --oneline --graph
+*   2e5e883 (HEAD -> main) <Mrg> ~ Branch new - Hello to GIT! && # Version/Help/Config
+|\  
+| * 9b15406 (new) <Upd> ~ Branch new - Add # Version/Help/Config
+* | 567b02c (fix) <Fix> ~ Hello to GIT?
+|/  
+* 1cdf010 (dev) <Upd> ~ Add line Hello to GIT!
+* bafd70b <New> ~ hello2git
+```
