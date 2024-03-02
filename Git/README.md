@@ -217,3 +217,152 @@ local   file:.git/config        core.editor=vim
 		1cdf010 (HEAD -> main) HEAD@{0}: commit: <Upd> ~ Add line Hello to GIT!
 		bafd70b HEAD@{1}: commit (initial): <New> ~ hello2git
 	```
+## Branch
+### `git branch [<branch>]` && `git checkout/switch <branch>`
+```
+@Liangliang-Shang ➜ ~/test (main) $ git branch
+* main
+
+@Liangliang-Shang ➜ ~/test (main) $ git branch fix
+
+@Liangliang-Shang ➜ ~/test (main) $ git branch -v
+  fix  1cdf010 <Upd> ~ Add line Hello to GIT!
+* main 1cdf010 <Upd> ~ Add line Hello to GIT!
+
+@Liangliang-Shang ➜ ~/test (main) $ git checkout fix
+Switched to branch 'fix'
+
+@Liangliang-Shang ➜ ~/test (fix) $ git branch -vv
+* fix  1cdf010 <Upd> ~ Add line Hello to GIT!
+  main 1cdf010 <Upd> ~ Add line Hello to GIT!
+
+@Liangliang-Shang ➜ ~/test (fix) $ git switch main
+Switched to branch 'main'
+
+@Liangliang-Shang ➜ ~/test (main) $ git branch 
+  fix
+* main
+
+@Liangliang-Shang ➜ ~/test (main) $ git checkout -b dev
+Switched to a new branch 'dev'
+
+@Liangliang-Shang ➜ ~/test (dev) $ git switch -c new
+Switched to a new branch 'new'
+
+@Liangliang-Shang ➜ ~/test (new) $ git branch -v
+  dev  1cdf010 <Upd> ~ Add line Hello to GIT!
+  fix  1cdf010 <Upd> ~ Add line Hello to GIT!
+  main 1cdf010 <Upd> ~ Add line Hello to GIT!
+* new  1cdf010 <Upd> ~ Add line Hello to GIT!
+```
+### Merge: Fast-forward
+```
+@Liangliang-Shang ➜ ~/test (new) $ git switch fix
+Switched to branch 'fix'
+
+@Liangliang-Shang ➜ ~/test (fix) $ git branch			# confirm on the branch: fix
+  dev
+* fix
+  main
+  new
+
+@Liangliang-Shang ➜ ~/test (fix) $ vim hello2git		# edit the file as shown in `git diff` 
+
+@Liangliang-Shang ➜ ~/test (fix) $ git status
+On branch fix
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   hello2git
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+@Liangliang-Shang ➜ ~/test (fix) $ git commit -am "<Fix> ~ Hello to GIT?"
+[fix 567b02c] <Fix> ~ Hello to GIT?
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+@Liangliang-Shang ➜ ~/test (fix) $ git diff 1cdf01 567b02	# diff on commits
+diff --git a/hello2git b/hello2git
+index 0a3b6d2..ec73a5d 100644
+--- a/hello2git
++++ b/hello2git
+@@ -1 +1 @@
+-Hello to GIT!
++Hello to GIT? A change from fix on line 1.
+
+@Liangliang-Shang ➜ ~/test (fix) $ git log --graph --oneline
+* 567b02c (HEAD -> fix) <Fix> ~ Hello to GIT?
+* 1cdf010 (new, main, dev) <Upd> ~ Add line Hello to GIT!
+* bafd70b <New> ~ hello2git
+
+@Liangliang-Shang ➜ ~/test (fix) $ git reflog
+567b02c (HEAD -> fix) HEAD@{0}: commit: <Fix> ~ Hello to GIT?
+1cdf010 (new, main, dev) HEAD@{1}: checkout: moving from new to fix
+1cdf010 (new, main, dev) HEAD@{2}: checkout: moving from dev to new
+1cdf010 (new, main, dev) HEAD@{3}: checkout: moving from main to dev
+1cdf010 (new, main, dev) HEAD@{4}: checkout: moving from fix to main
+1cdf010 (new, main, dev) HEAD@{5}: checkout: moving from main to fix
+1cdf010 (new, main, dev) HEAD@{6}: commit: <Upd> ~ Add line Hello to GIT!
+bafd70b HEAD@{7}: commit (initial): <New> ~ hello2git
+
+@Liangliang-Shang ➜ ~/test (fix) $ git switch main
+Switched to branch 'main'
+
+@Liangliang-Shang ➜ ~/test (main) $ git branch -v
+  dev  1cdf010 <Upd> ~ Add line Hello to GIT!
+  fix  567b02c <Fix> ~ Hello to GIT?
+* main 1cdf010 <Upd> ~ Add line Hello to GIT!
+  new  1cdf010 <Upd> ~ Add line Hello to GIT!
+
+@Liangliang-Shang ➜ ~/test (main) $ git log --pretty=oneline
+1cdf010451dc55e1e45167d50aaeefa9f1f9b179 (HEAD -> main, new, dev) <Upd> ~ Add line Hello to GIT!
+bafd70b48c2343bec9a3fc5eb6b2ad5cf42d405a <New> ~ hello2git
+
+@Liangliang-Shang ➜ ~/test (main) $ git status
+On branch main
+nothing to commit, working tree clean
+
+@Liangliang-Shang ➜ ~/test (main) $ git merge fix
+Updating 1cdf010..567b02c
+Fast-forward
+ hello2git | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+@Liangliang-Shang ➜ ~/test (main) $ cat hello2git 
+Hello to GIT? A change from fix on line 1.
+
+@Liangliang-Shang ➜ ~/test (main) $ git status
+On branch main
+nothing to commit, working tree clean
+
+@Liangliang-Shang ➜ ~/test (main) $ git log
+commit 567b02c0e64a9ac05d65b119fe558ff595e2ad21 (HEAD -> main, fix)
+Author: Liangliang <liangliang.shang@icloud.com>
+Date:   Sat Mar 2 03:26:34 2024 +0000
+
+    <Fix> ~ Hello to GIT?
+
+commit 1cdf010451dc55e1e45167d50aaeefa9f1f9b179 (new, dev)
+Author: Liangliang <liangliang.shang@icloud.com>
+Date:   Fri Mar 1 13:26:01 2024 +0000
+
+    <Upd> ~ Add line Hello to GIT!
+
+commit bafd70b48c2343bec9a3fc5eb6b2ad5cf42d405a
+Author: Liangliang <liangliang.shang@icloud.com>
+Date:   Fri Mar 1 12:52:38 2024 +0000
+
+    <New> ~ hello2git
+
+@Liangliang-Shang ➜ ~/test (main) $ git reflog
+567b02c (HEAD -> main, fix) HEAD@{0}: merge fix: Fast-forward
+1cdf010 (new, dev) HEAD@{1}: checkout: moving from fix to main
+567b02c (HEAD -> main, fix) HEAD@{2}: commit: <Fix> ~ Hello to GIT?
+1cdf010 (new, dev) HEAD@{3}: checkout: moving from new to fix
+1cdf010 (new, dev) HEAD@{4}: checkout: moving from dev to new
+1cdf010 (new, dev) HEAD@{5}: checkout: moving from main to dev
+1cdf010 (new, dev) HEAD@{6}: checkout: moving from fix to main
+1cdf010 (new, dev) HEAD@{7}: checkout: moving from main to fix
+1cdf010 (new, dev) HEAD@{8}: commit: <Upd> ~ Add line Hello to GIT!
+bafd70b HEAD@{9}: commit (initial): <New> ~ hello2git
+```
