@@ -475,4 +475,8 @@ Deleted branch fix (was 567b02c).
 |/  
 * 1cdf010 (dev) <Upd> ~ Add line Hello to GIT!
 * bafd70b <New> ~ hello2git
+
+@Liangliang-Shang ➜ ~/test (main) $ git branch -v
+  dev  1cdf010 <Upd> ~ Add line Hello to GIT!
+* main 2e5e883 <Mrg> ~ Branch new - Hello to GIT! && # Version/Help/Config
 ```
