@@ -462,3 +462,17 @@ index ec73a5d,c4565b9..0000000
 * 1cdf010 (dev) <Upd> ~ Add line Hello to GIT!
 * bafd70b <New> ~ hello2git
 ```
+### `git branch -d <branch>`
+```
+@Liangliang-Shang ➜ ~/test (main) $ git branch -d new fix
+Deleted branch new (was 9b15406).
+Deleted branch fix (was 567b02c).
+
+*   2e5e883 (HEAD -> main) <Mrg> ~ Branch new - Hello to GIT! && # Version/Help/Config
+|\  
+| * 9b15406 <Upd> ~ Branch new - Add # Version/Help/Config
+* | 567b02c <Fix> ~ Hello to GIT?
+|/  
+* 1cdf010 (dev) <Upd> ~ Add line Hello to GIT!
+* bafd70b <New> ~ hello2git
+```
