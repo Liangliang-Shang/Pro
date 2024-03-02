@@ -480,3 +480,126 @@ Deleted branch fix (was 567b02c).
   dev  1cdf010 <Upd> ~ Add line Hello to GIT!
 * main 2e5e883 <Mrg> ~ Branch new - Hello to GIT! && # Version/Help/Config
 ```
+## Rebase
+### Re-org commit
+```
+@Liangliang-Shang ➜ ~/test (main) $ git rebase -i 1cdf010
+
+pick 567b02c <Fix> ~ Hello to GIT?
+reword 9b15406 <Upd> ~ Branch new - Add # Version/Help/Config
+
+# Rebase 1cdf010..2e5e883 onto 1cdf010 (2 commands)
+#
+# Commands:
+# p, pick <commit> = use commit
+# r, reword <commit> = use commit, but edit the commit message
+# e, edit <commit> = use commit, but stop for amending
+# s, squash <commit> = use commit, but meld into previous commit
+# f, fixup [-C | -c] <commit> = like "squash" but keep only the previous
+#                    commit's log message, unless -C is used, in which case
+#                    keep only this commit's message; -c is same as -C but
+#                    opens the editor
+# x, exec <command> = run command (the rest of the line) using shell
+# b, break = stop here (continue rebase later with 'git rebase --continue')
+# d, drop <commit> = remove commit
+# l, label <label> = label current HEAD with a name
+# t, reset <label> = reset HEAD to a label
+# m, merge [-C <commit> | -c <commit>] <label> [# <oneline>]
+#         create a merge commit using the original merge commit's
+#         message (or the oneline, if no original merge commit was
+#         specified); use -c <commit> to reword the commit message
+# u, update-ref <ref> = track a placeholder for the <ref> to be updated
+#                       to this position in the new commits. The <ref> is
+#                       updated at the end of the rebase
+#
+# These lines can be re-ordered; they are executed from top to bottom.
+#
+# If you remove a line here THAT COMMIT WILL BE LOST.
+#
+# However, if you remove everything, the rebase will be aborted.
+#
+
+Auto-merging hello2git
+CONFLICT (content): Merge conflict in hello2git
+error: could not apply 9b15406... <Upd> ~ Branch new - Add # Version/Help/Config
+hint: Resolve all conflicts manually, mark them as resolved with
+hint: "git add/rm <conflicted_files>", then run "git rebase --continue".
+hint: You can instead skip this commit: run "git rebase --skip".
+hint: To abort and get back to the state before "git rebase", run "git rebase --abort".
+Could not apply 9b15406... <Upd> ~ Branch new - Add # Version/Help/Config
+
+@Liangliang-Shang ➜ ~/test (567b02c) $ cat hello2git 
+<<<<<<< HEAD
+Hello to GIT? A change from fix on line 1.
+=======
+Hello to GIT!
+
+# Version
+
+# Help
+
+# Config
+>>>>>>> 9b15406 (<Upd> ~ Branch new - Add # Version/Help/Config)
+
+@Liangliang-Shang ➜ ~/test (567b02c) $ vim hello2git		# manually fix hello2git
+
+@Liangliang-Shang ➜ ~/test (567b02c) $ git status
+interactive rebase in progress; onto 1cdf010
+Last commands done (2 commands done):
+   pick 567b02c <Fix> ~ Hello to GIT?
+   reword 9b15406 <Upd> ~ Branch new - Add # Version/Help/Config
+No commands remaining.
+You are currently rebasing branch 'main' on '1cdf010'.
+  (fix conflicts and then run "git rebase --continue")
+  (use "git rebase --skip" to skip this patch)
+  (use "git rebase --abort" to check out the original branch)
+
+Unmerged paths:
+  (use "git restore --staged <file>..." to unstage)
+  (use "git add <file>..." to mark resolution)
+        both modified:   hello2git
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+@Liangliang-Shang ➜ ~/test (567b02c) $ git add hello2git 
+
+@Liangliang-Shang ➜ ~/test (567b02c) $ git rebase --continue
+[detached HEAD cf4875d] <Upd> ~ Add # Version/Help/Config
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+Successfully rebased and updated refs/heads/main.
+
+@Liangliang-Shang ➜ ~/test (main) $ git status
+On branch main
+nothing to commit, working tree clean
+
+@Liangliang-Shang ➜ ~/test (main) $ git log --graph
+* commit cf4875d1990d654f15dfc9a93dcf8eb8a38f6897 (HEAD -> main)
+| Author: Liangliang <liangliang.shang@icloud.com>
+| Date:   Sat Mar 2 04:17:33 2024 +0000
+| 
+|     <Upd> ~ Add # Version/Help/Config
+| 
+* commit 567b02c0e64a9ac05d65b119fe558ff595e2ad21
+| Author: Liangliang <liangliang.shang@icloud.com>
+| Date:   Sat Mar 2 03:26:34 2024 +0000
+| 
+|     <Fix> ~ Hello to GIT?
+| 
+* commit 1cdf010451dc55e1e45167d50aaeefa9f1f9b179 (dev)
+| Author: Liangliang <liangliang.shang@icloud.com>
+| Date:   Fri Mar 1 13:26:01 2024 +0000
+| 
+|     <Upd> ~ Add line Hello to GIT!
+| 
+* commit bafd70b48c2343bec9a3fc5eb6b2ad5cf42d405a
+  Author: Liangliang <liangliang.shang@icloud.com>
+  Date:   Fri Mar 1 12:52:38 2024 +0000
+  
+      <New> ~ hello2git
+
+@Liangliang-Shang ➜ ~/test (main) $ git log --graph --oneline
+* cf4875d (HEAD -> main) <Upd> ~ Add # Version/Help/Config
+* 567b02c <Fix> ~ Hello to GIT?
+* 1cdf010 (dev) <Upd> ~ Add line Hello to GIT!
+* bafd70b <New> ~ hello2git
+```
